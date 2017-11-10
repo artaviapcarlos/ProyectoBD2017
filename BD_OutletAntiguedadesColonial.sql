@@ -1,6 +1,8 @@
+-- create database BD_OutletAntiguedadesColonial;
+
 use BD_OutletAntiguedadesColonial;
 
-DROP TABLE Producto;
+/*DROP TABLE Producto;
 DROP TABLE Categoria;
 DROP TABLE Compra;
 DROP TABLE Contenedor;
@@ -11,7 +13,7 @@ DROP TABLE Cliente;
 DROP TABLE Trabaja_En;
 DROP TABLE Sucursal;
 DROP TABLE Vendedor;
-DROP TABLE Persona;
+DROP TABLE Persona;*/
 
 
 CREATE TABLE Persona (
@@ -75,7 +77,7 @@ CREATE TABLE Trabaja_En (
 
 
 CREATE TABLE Compra (
-	NumeroCompra int,
+	NumeroCompra int IDENTITY(1,1) NOT NULL,
 	FechaCompra date,
 	Ubicacion nvarchar(100) FOREIGN KEY (Ubicacion) REFERENCES Sucursal(Ubicacion),
 	Descuento int DEFAULT 0,
