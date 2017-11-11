@@ -1,17 +1,5 @@
 use BD_OutletAntiguedadesColonial;
 
-DROP TABLE Producto;
-DROP TABLE Categoria;
-DROP TABLE Compra;
-DROP TABLE Contenedor;
-DROP TABLE TelefonoS;
-DROP TABLE TelefonoP;
-DROP TABLE Atiende;
-DROP TABLE Cliente;
-DROP TABLE Trabaja_En;
-DROP TABLE Sucursal;
-DROP TABLE Vendedor;
-DROP TABLE Persona;
 
 
 CREATE TABLE Persona (
@@ -33,6 +21,7 @@ CREATE TABLE Vendedor (
 	TotalVendido int,
 	Ubicacion nvarchar(100)
 )
+ALTER TABLE Vendedor ADD Constraint CK_Salario_Mayor_A_100000 check ( Salario <= 400000 and Salario >= 100000);
 
 
 CREATE TABLE Cliente (
@@ -109,7 +98,6 @@ CREATE TABLE Producto (
 	CONSTRAINT FK_Compra FOREIGN KEY (NumeroCompra, FechaCompra) REFERENCES Compra
 )
 
-
 -- Inserts Personas
 INSERT INTO Persona VALUES ('403165495', 'Sergio', 'Chavarria', 'Ortega', 'sergio.chavarria', 'M', '1982-04-23', 'Mingo');
 INSERT INTO Persona VALUES ('116390735', 'Jose', 'Artavia', 'Moya', 'jose.artavia', 'M', '1996-04-23', 'Mingo');
@@ -119,9 +107,10 @@ INSERT INTO Persona VALUES ('200164645', 'Renata', 'Vasquez', 'Pineda', 'renata.
 INSERT INTO Persona VALUES ('203135498', 'María', 'Jiménez', 'Chaves', 'maria.jimenez', 'F', '1990-12-16', 'Puerto Viejo');
 
 -- Inserts Vendedores
-INSERT INTO Vendedor VALUES ('403165495', 500000, 20330, NULL);
+INSERT INTO Vendedor VALUES ('403165495', 300000, 20330, NULL);
 INSERT INTO Vendedor VALUES ('106070931', 350000, 62250, NULL);
-INSERT INTO Vendedor VALUES ('203135498', 450000, 96300, NULL);
+INSERT INTO Vendedor VALUES ('203135498', 380000, 96300, NULL);
+
 
 
 --Inserts Clientes
@@ -137,7 +126,9 @@ INSERT INTO TelefonoP VALUES ('106070931', 86754213);
 INSERT INTO TelefonoP VALUES ('560546875', 75324609);
 INSERT INTO TelefonoP VALUES ('200164645', 85964130);
 INSERT INTO TelefonoP VALUES ('203135498', 60518479);
-
+INSERT INTO TelefonoP VALUES ('203135498', 60518475);
+INSERT INTO TelefonoP VALUES ('203135498', 605184375);
+INSERT INTO TelefonoP VALUES ('203135498', 105184311),('203135498', 10518432),('203135498', 10518431);
 
 --Inserts Atendidos
 INSERT INTO Atiende VALUES ('403165495', '116390735');
@@ -183,3 +174,59 @@ INSERT INTO Contenedor VALUES ('2017-01-01', 'Compra exposición de arte antiguo'
 INSERT INTO Producto VALUES ('2016-03-06', 4, 50000, '2017-04-04', 'Silla medieval', 'Ciudad Colón');
 INSERT INTO Producto VALUES ('2016-08-23', 2, 35000, '2017-05-05', 'Lámpara clásica', 'Santa Ana');
 INSERT INTO Producto VALUES ('2017-01-01', 6, 70000, '2017-06-06', 'Cuadro del barroco', 'Santa Ana');
+
+
+--------------------PROCEDURE----------------------------------
+
+go
+create procedure insertarContenedor(
+
+@Fecha date,
+@Descripcion varchar(100),
+@NombreProveedor varchar(100)
+)
+as
+insert into Contenedor
+(Fecha,Descripcion,NombreProveedor)
+values
+(@Fecha,@Descripcion,@NombreProveedor);
+
+
+exec insertarContenedor '23-08-2017' , 'Productos Contemporaneos','FADEC';
+
+
+----------------TRIGGER-----------------------
+
+go
+create trigger RestriccionPrecio on TelefonoP
+instead of insert  
+as
+
+	declare @Cedula char(9),@Telefono INT
+	declare CursorTelefono Cursor for select  i.Cedula,i.Telefono
+    from inserted i;
+
+	open CursorTelefono
+
+	fetch next from CursorTelefono into @Cedula,@Telefono;
+
+	WHILE @@FETCH_STATUS = 0
+
+	begin
+
+	if((LEN(@Telefono)) = 8 )begin
+    insert into TelefonoP values (@Cedula,@Telefono) end
+	--('2017-01-01', 6, 70000, '2017-06-06', 'Cuadro del barroco', 'Santa Ana');
+	
+
+	else begin
+	print 'Error, el teléfono debe ser de ocho dígitos'
+	end
+
+	fetch next from CursorTelefono into @Cedula,@Telefono;
+
+	end
+							
+	close CursorTelefono
+	deallocate CursorTelefono
+go
