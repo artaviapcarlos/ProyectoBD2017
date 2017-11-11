@@ -73,5 +73,3 @@ INSERT INTO Contenedor VALUES ('2017-01-01', 'Compra exposición de arte antiguo'
 INSERT INTO Producto VALUES ('2016-03-06', 4, 50000, '2017-04-04', 'Silla medieval', 'Ciudad Colón');
 INSERT INTO Producto VALUES ('2016-08-23', 2, 35000, '2017-05-05', 'Lámpara clásica', 'Santa Ana');
 INSERT INTO Producto VALUES ('2017-01-01', 6, 70000, '2017-06-06', 'Cuadro del barroco', 'Santa Ana');
-
-SELECT * FROM Producto;
