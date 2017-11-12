@@ -102,12 +102,12 @@ CREATE TABLE Contenedor (
 
 CREATE TABLE Producto (
 	Fecha date PRIMARY KEY NOT NULL,
-	FOREIGN KEY (Fecha) REFERENCES Contenedor(Fecha),
+	FOREIGN KEY (Fecha) REFERENCES Contenedor(Fecha) on update cascade,
 	CantidadInventario int, 
 	Precio int,
 	NumeroCompra int IDENTITY(1,1),
 	FechaCompra date,
-	Nombre nvarchar(100) FOREIGN KEY (Nombre) REFERENCES Categoria(Nombre),
+	Nombre nvarchar(100) FOREIGN KEY (Nombre) REFERENCES Categoria(Nombre) on update cascade,
 	Ubicacion nvarchar(100) FOREIGN KEY (Ubicacion) REFERENCES Sucursal(Ubicacion),
 	CONSTRAINT FK_Compra FOREIGN KEY (NumeroCompra, FechaCompra) REFERENCES Compra
 )
