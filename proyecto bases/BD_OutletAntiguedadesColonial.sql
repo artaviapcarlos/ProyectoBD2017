@@ -1,5 +1,7 @@
 use BD_OutletAntiguedadesColonial;
 
+
+DROP TABLE ProductoCompra;
 DROP TABLE Compra;
 DROP TABLE Producto;
 DROP TABLE Categoria;
@@ -89,25 +91,35 @@ CREATE TABLE Contenedor (
 
 
 CREATE TABLE Producto (
+	Nombre nvarchar(100) NOT NULL FOREIGN KEY (Nombre) REFERENCES Categoria(Nombre),
 	Fecha date NOT NULL FOREIGN KEY (Fecha) REFERENCES Contenedor(Fecha),
-	CantidadInventario int, 
 	Precio int,
-	Nombre nvarchar(100) FOREIGN KEY (Nombre) REFERENCES Categoria(Nombre),
-	Ubicacion nvarchar(100) FOREIGN KEY (Ubicacion) REFERENCES Sucursal(Ubicacion) ON DELETE CASCADE,
+	CantidadInventario int, 
+	Ubicacion nvarchar(100) FOREIGN KEY (Ubicacion) REFERENCES Sucursal(Ubicacion) ON DELETE CASCADE
 	CONSTRAINT PK_Producto PRIMARY KEY (Nombre, Fecha)
 )
 
 
 CREATE TABLE Compra (
 	NumeroCompra int NOT NULL IDENTITY(1,1),
-	FechaCompra smalldatetime,
+	FechaCompra date NOT NULL,
 	Ubicacion nvarchar(100) FOREIGN KEY (Ubicacion) REFERENCES Sucursal(Ubicacion) ON DELETE CASCADE,
-	Descuento int DEFAULT 0,
 	CedulaV char(9) FOREIGN KEY (CedulaV) REFERENCES Vendedor(Cedula),
 	CedulaC char(9) FOREIGN KEY (CedulaC) REFERENCES Cliente(Cedula),
-	Nombre nvarchar(100) FOREIGN KEY (Nombre) REFERENCES Categoria(Nombre),
-	Fecha date, 
 	CONSTRAINT PK_Compra PRIMARY KEY (NumeroCompra, FechaCompra),
-	CONSTRAINT FK_Producto FOREIGN KEY (Nombre, Fecha) REFERENCES Producto(Nombre, Fecha)
 )
-ALTER TABLE Compra ADD CONSTRAINT DF_Date DEFAULT GETDATE() FOR FechaCompra
+
+
+CREATE TABLE ProductoCompra (
+	NumeroCompra int NOT NULL IDENTITY(1,1), 
+	FechaCompra date NOT NULL,
+	Nombre nvarchar(100) NOT NULL,
+	Fecha date NOT NULL,
+	Cantidad int NOT NULL,
+	Descuento int DEFAULT 0,
+	MontoTotal int NOT NULL
+	CONSTRAINT PK_ProductoCompra PRIMARY KEY (NumeroCompra, FechaCompra, Nombre, Fecha)
+)
+ALTER TABLE ProductoCompra ADD 
+CONSTRAINT FK_Compra FOREIGN KEY (NumeroCompra, FechaCompra) REFERENCES Compra(NumeroCompra, FechaCompra),
+CONSTRAINT FK_Producto FOREIGN KEY (Nombre, Fecha) REFERENCES Producto(Nombre, Fecha) 
