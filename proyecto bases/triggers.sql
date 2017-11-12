@@ -1,10 +1,23 @@
 use BD_OutletAntiguedadesColonial;
 
 
-
 --------------------------PROCEDURE--------------------------------
 
+go
+create procedure insertarContenedor(
 
+@Fecha date,
+@Descripcion varchar(100),
+@NombreProveedor varchar(100)
+)
+as
+insert into Contenedor
+(Fecha,Descripcion,NombreProveedor)
+values
+(@Fecha,@Descripcion,@NombreProveedor);
+
+
+exec insertarContenedor '23-08-2017' , 'Productos Contemporaneos','FADEC';
 
 
 -----------------------FUNCTIONS------------------------------
@@ -18,9 +31,14 @@ begin
 declare @monto float;
 select @monto = (@precio * @cant) - ((@precio * @cant) * (cast(@desc as float) / 100))
 return @monto 
-end 
-go
+end
+go 
 
+DROP FUNCTION CalculaMontoTotal
+
+DECLARE @monto float; 
+EXEC @monto = CalculaMontoTotal 10, 2, 70000
+SELECT @monto as 'Monto'
 
 
 -------------------TRIGGERS-----------------------
@@ -41,7 +59,7 @@ as
 
 	begin
 
-	if((LEN(@Telefono)) = 8 )begin
+	if((LEN(@Telefono)) = 8)begin
     insert into TelefonoP values (@Cedula,@Telefono) end
 	--('2017-01-01', 6, 70000, '2017-06-06', 'Cuadro del barroco', 'Santa Ana');
 	

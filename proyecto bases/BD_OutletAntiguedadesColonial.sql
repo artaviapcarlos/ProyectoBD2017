@@ -46,15 +46,15 @@ CREATE TABLE Cliente (
 
 
 CREATE TABLE TelefonoP (
-	Cedula char(9) FOREIGN KEY (Cedula) REFERENCES Persona(Cedula),
+	Cedula char(9) NOT NULL FOREIGN KEY (Cedula) REFERENCES Persona(Cedula),
 	Telefono INT
 	CONSTRAINT PK_TelefonoP PRIMARY KEY (Cedula, Telefono)
 )
 
  
 CREATE TABLE Atiende (
-	CedulaV char(9) FOREIGN KEY (CedulaV) REFERENCES Vendedor(Cedula),
-	CedulaC char(9) FOREIGN KEY (CedulaC) REFERENCES Cliente(Cedula),
+	CedulaV char(9) NOT NULL FOREIGN KEY (CedulaV) REFERENCES Vendedor(Cedula),
+	CedulaC char(9) NOT NULL FOREIGN KEY (CedulaC) REFERENCES Cliente(Cedula),
 	CONSTRAINT PK_Atiende PRIMARY KEY (CedulaV, CedulaC)
 )
 
@@ -65,8 +65,8 @@ CREATE TABLE Sucursal (
 
 
 CREATE TABLE TelefonoS (
-	Ubicacion nvarchar(100) FOREIGN KEY (Ubicacion) REFERENCES Sucursal(Ubicacion) ON DELETE CASCADE,
-	Telefono INT
+	Ubicacion nvarchar(100) NOT NULL FOREIGN KEY (Ubicacion) REFERENCES Sucursal(Ubicacion) ON DELETE CASCADE,
+	Telefono INT NOT NULL
 	CONSTRAINT PK_TelefonoS PRIMARY KEY (Ubicacion, Telefono)
 )
 
@@ -93,33 +93,34 @@ CREATE TABLE Contenedor (
 CREATE TABLE Producto (
 	Nombre nvarchar(100) NOT NULL FOREIGN KEY (Nombre) REFERENCES Categoria(Nombre),
 	Fecha date NOT NULL FOREIGN KEY (Fecha) REFERENCES Contenedor(Fecha),
-	Precio int,
-	CantidadInventario int, 
-	Ubicacion nvarchar(100) FOREIGN KEY (Ubicacion) REFERENCES Sucursal(Ubicacion) ON DELETE CASCADE
+	Precio int NOT NULL,
+	CantidadInventario int NOT NULL, 
+	Ubicacion nvarchar(100) NOT NULL FOREIGN KEY (Ubicacion) REFERENCES Sucursal(Ubicacion) ON DELETE CASCADE
 	CONSTRAINT PK_Producto PRIMARY KEY (Nombre, Fecha)
 )
+ALTER TABLE Producto ADD Constraint CK_CantidadInventario check (CantidadInventario > 0);
 
 
 CREATE TABLE Compra (
 	NumeroCompra int NOT NULL IDENTITY(1,1),
 	FechaCompra date NOT NULL,
-	Ubicacion nvarchar(100) FOREIGN KEY (Ubicacion) REFERENCES Sucursal(Ubicacion) ON DELETE CASCADE,
-	CedulaV char(9) FOREIGN KEY (CedulaV) REFERENCES Vendedor(Cedula),
-	CedulaC char(9) FOREIGN KEY (CedulaC) REFERENCES Cliente(Cedula),
-	CONSTRAINT PK_Compra PRIMARY KEY (NumeroCompra, FechaCompra),
+	Ubicacion nvarchar(100) NOT NULL FOREIGN KEY (Ubicacion) REFERENCES Sucursal(Ubicacion) ON DELETE CASCADE,
+	CedulaV char(9) NOT NULL FOREIGN KEY (CedulaV) REFERENCES Vendedor(Cedula),
+	CedulaC char(9) NOT NULL FOREIGN KEY (CedulaC) REFERENCES Cliente(Cedula),
+	CONSTRAINT PK_Compra PRIMARY KEY (FechaCompra, Ubicacion),
 )
 
 
 CREATE TABLE ProductoCompra (
-	NumeroCompra int NOT NULL IDENTITY(1,1), 
 	FechaCompra date NOT NULL,
+	Ubicacion nvarchar(100) NOT NULL,
 	Nombre nvarchar(100) NOT NULL,
 	Fecha date NOT NULL,
 	Cantidad int NOT NULL,
 	Descuento int DEFAULT 0,
 	MontoTotal int NOT NULL
-	CONSTRAINT PK_ProductoCompra PRIMARY KEY (NumeroCompra, FechaCompra, Nombre, Fecha)
+	CONSTRAINT PK_ProductoCompra PRIMARY KEY (FechaCompra, Ubicacion, Nombre, Fecha)
 )
 ALTER TABLE ProductoCompra ADD 
-CONSTRAINT FK_Compra FOREIGN KEY (NumeroCompra, FechaCompra) REFERENCES Compra(NumeroCompra, FechaCompra),
+CONSTRAINT FK_Compra FOREIGN KEY (FechaCompra, Ubicacion) REFERENCES Compra(FechaCompra, Ubicacion),
 CONSTRAINT FK_Producto FOREIGN KEY (Nombre, Fecha) REFERENCES Producto(Nombre, Fecha) 

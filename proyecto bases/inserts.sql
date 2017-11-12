@@ -68,8 +68,8 @@ INSERT INTO Categoria VALUES ('Armario siglo XVIII');
 
 
 --Inserts Productos
+INSERT INTO Producto VALUES ('Armario siglo XVIII', '2016-03-06', 70000, 2, 'Ciudad Colón');
 INSERT INTO Producto VALUES ('Silla medieval', '2016-03-06', 50000, 4, 'Ciudad Colón');
-INSERT INTO Producto VALUES ('Armario siglo XVIII', '2016-03-06', 70000, 2, 'Santa Ana');
 INSERT INTO Producto VALUES ('Lámpara clásica', '2016-08-23', 35000, 2, 'Santa Ana');
 INSERT INTO Producto VALUES ('Cuadro del barroco', '2017-01-01', 70000, 6, 'Santa Ana');
 
@@ -80,7 +80,6 @@ INSERT INTO Compra VALUES ('2017-07-11', 'Santa Ana', '203135498', '200164645');
 
 
 --Inserts ProductoCompra
-INSERT INTO ProductoCompra VALUES ('2017-06-02', 'Silla medieval', '2016-03-06', 2, 10,90000);
-INSERT INTO ProductoCompra VALUES ('2017-07-11', 'Cuadro del barroco', '2017-01-01', 2, 5, 133000);
-
-select * from ProductoCompra
+INSERT INTO ProductoCompra VALUES ('2017-06-02', 'Ciudad Colón', 'Armario siglo XVIII', '2016-03-06', 2, 10, 126000);
+INSERT INTO ProductoCompra VALUES ('2017-06-02', 'Ciudad Colón', 'Silla Medieval', '2016-03-06', 2, 10, 90000);
+INSERT INTO ProductoCompra VALUES ('2017-07-11', 'Santa Ana', 'Cuadro del barroco', '2017-01-01', 2, 5, 133000);
