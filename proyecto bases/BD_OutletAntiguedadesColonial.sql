@@ -1,7 +1,7 @@
 use BD_OutletAntiguedadesColonial;
 
 
-DROP TABLE ProductoCompra;
+DROP TABLE Incluye;
 DROP TABLE Compra;
 DROP TABLE Producto;
 DROP TABLE Categoria;
@@ -33,11 +33,13 @@ CREATE TABLE Vendedor (
 	Cedula char(9) PRIMARY KEY NOT NULL
 	FOREIGN KEY (Cedula) REFERENCES Persona(Cedula) ON DELETE NO ACTION,
 	Salario decimal(10, 2) NOT NULL,
-	TotalVendido int,
-	Ubicacion nvarchar(100)
+	TotalVendido int
 )
 ALTER TABLE Vendedor ADD Constraint CK_Salario_Mayor_A_100000 check (Salario >= 100000 and Salario <= 500000);
 
+CREATE TABLE Sucursal (
+	Ubicacion nvarchar(100) PRIMARY KEY NOT NULL
+)
 
 CREATE TABLE Cliente (
 	Cedula char(9) PRIMARY KEY NOT NULL
@@ -56,11 +58,6 @@ CREATE TABLE Atiende (
 	CedulaV char(9) NOT NULL FOREIGN KEY (CedulaV) REFERENCES Vendedor(Cedula),
 	CedulaC char(9) NOT NULL FOREIGN KEY (CedulaC) REFERENCES Cliente(Cedula),
 	CONSTRAINT PK_Atiende PRIMARY KEY (CedulaV, CedulaC)
-)
-
-
-CREATE TABLE Sucursal (
-	Ubicacion nvarchar(100) PRIMARY KEY NOT NULL
 )
 
 
@@ -92,7 +89,7 @@ CREATE TABLE Contenedor (
 
 CREATE TABLE Producto (
 	Nombre nvarchar(100) NOT NULL FOREIGN KEY (Nombre) REFERENCES Categoria(Nombre),
-	Fecha date NOT NULL FOREIGN KEY (Fecha) REFERENCES Contenedor(Fecha),
+	Fecha date NOT NULL FOREIGN KEY (Fecha) REFERENCES Contenedor(Fecha) on update cascade,
 	Precio int NOT NULL,
 	CantidadInventario int NOT NULL, 
 	Ubicacion nvarchar(100) NOT NULL FOREIGN KEY (Ubicacion) REFERENCES Sucursal(Ubicacion) ON DELETE CASCADE
@@ -103,7 +100,7 @@ ALTER TABLE Producto ADD Constraint CK_CantidadInventario check (CantidadInventa
 
 CREATE TABLE Compra (
 	NumeroCompra int NOT NULL IDENTITY(1,1),
-	FechaCompra date NOT NULL,
+	FechaCompra smalldatetime NOT NULL,
 	Ubicacion nvarchar(100) NOT NULL FOREIGN KEY (Ubicacion) REFERENCES Sucursal(Ubicacion) ON DELETE CASCADE,
 	CedulaV char(9) NOT NULL FOREIGN KEY (CedulaV) REFERENCES Vendedor(Cedula),
 	CedulaC char(9) NOT NULL FOREIGN KEY (CedulaC) REFERENCES Cliente(Cedula),
@@ -111,16 +108,16 @@ CREATE TABLE Compra (
 )
 
 
-CREATE TABLE ProductoCompra (
-	FechaCompra date NOT NULL,
+CREATE TABLE Incluye (
+	FechaCompra smalldatetime NOT NULL,
 	Ubicacion nvarchar(100) NOT NULL,
 	Nombre nvarchar(100) NOT NULL,
 	Fecha date NOT NULL,
 	Cantidad int NOT NULL,
 	Descuento int DEFAULT 0,
 	MontoTotal int NOT NULL
-	CONSTRAINT PK_ProductoCompra PRIMARY KEY (FechaCompra, Ubicacion, Nombre, Fecha)
+	CONSTRAINT PK_Incluye PRIMARY KEY (FechaCompra, Ubicacion, Nombre, Fecha)
 )
-ALTER TABLE ProductoCompra ADD 
+ALTER TABLE Incluye ADD 
 CONSTRAINT FK_Compra FOREIGN KEY (FechaCompra, Ubicacion) REFERENCES Compra(FechaCompra, Ubicacion),
 CONSTRAINT FK_Producto FOREIGN KEY (Nombre, Fecha) REFERENCES Producto(Nombre, Fecha) 

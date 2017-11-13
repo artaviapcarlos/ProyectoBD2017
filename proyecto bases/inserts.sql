@@ -12,9 +12,9 @@ INSERT INTO Persona VALUES ('203135498', 'María', 'Jiménez', 'Chaves', 'maria.ji
 
 
 -- Inserts Vendedores
-INSERT INTO Vendedor VALUES ('403165495', 500000, 20330, NULL);
-INSERT INTO Vendedor VALUES ('106070931', 350000, 62250, NULL);
-INSERT INTO Vendedor VALUES ('203135498', 450000, 96300, NULL);
+INSERT INTO Vendedor VALUES ('403165495', 500000, 20330);
+INSERT INTO Vendedor VALUES ('106070931', 350000, 62250);
+INSERT INTO Vendedor VALUES ('203135498', 450000, 96300);
 
 
 --Inserts Clientes
@@ -31,16 +31,14 @@ INSERT INTO TelefonoP VALUES ('560546875', 75324609);
 INSERT INTO TelefonoP VALUES ('200164645', 85964130);
 INSERT INTO TelefonoP VALUES ('203135498', 60518479);
 
+--Inserts Sucursales
+INSERT INTO Sucursal VALUES ('Ciudad Colón');
+INSERT INTO Sucursal VALUES ('Santa Ana');
 
 --Inserts Atendidos
 INSERT INTO Atiende VALUES ('403165495', '116390735');
 INSERT INTO Atiende VALUES ('106070931', '560546875');
 INSERT INTO Atiende VALUES ('203135498', '200164645');
-
-
---Inserts Sucursales
-INSERT INTO Sucursal VALUES ('Ciudad Colón');
-INSERT INTO Sucursal VALUES ('Santa Ana');
 
 
 --Inserts Telefonos Sucursales
@@ -74,12 +72,11 @@ INSERT INTO Producto VALUES ('Lámpara clásica', '2016-08-23', 35000, 2, 'Santa A
 INSERT INTO Producto VALUES ('Cuadro del barroco', '2017-01-01', 70000, 6, 'Santa Ana');
 
 
---Inserts Compras
-INSERT INTO Compra VALUES ('2017-06-02', 'Ciudad Colón', '403165495', '116390735');
-INSERT INTO Compra VALUES ('2017-07-11', 'Santa Ana', '203135498', '200164645');
+--Inserts Compras/Incluye
+INSERT INTO Compra VALUES ('2017-06-02 12:40:00', 'Ciudad Colón', '403165495', '116390735');
+INSERT INTO Incluye VALUES ('2017-06-02 12:40:00', 'Ciudad Colón', 'Armario siglo XVIII', '2016-03-06', 2, 10, 126000);
+INSERT INTO Incluye VALUES ('2017-06-02 12:40:00', 'Ciudad Colón', 'Silla Medieval', '2016-03-06', 2, 10, 90000);
 
 
---Inserts ProductoCompra
-INSERT INTO ProductoCompra VALUES ('2017-06-02', 'Ciudad Colón', 'Armario siglo XVIII', '2016-03-06', 2, 10, 126000);
-INSERT INTO ProductoCompra VALUES ('2017-06-02', 'Ciudad Colón', 'Silla Medieval', '2016-03-06', 2, 10, 90000);
-INSERT INTO ProductoCompra VALUES ('2017-07-11', 'Santa Ana', 'Cuadro del barroco', '2017-01-01', 2, 5, 133000);
+INSERT INTO Compra VALUES ('2017-07-11 15:15:15', 'Santa Ana', '203135498', '200164645');
+INSERT INTO Incluye VALUES ('2017-07-11 15:15:15', 'Santa Ana', 'Cuadro del barroco', '2017-01-01', 2, 5, 133000);

@@ -3,6 +3,8 @@ use BD_OutletAntiguedadesColonial;
 
 --------------------------PROCEDURE--------------------------------
 
+drop procedure insertarContenedor
+
 go
 create procedure insertarContenedor(
 
@@ -17,10 +19,12 @@ values
 (@Fecha,@Descripcion,@NombreProveedor);
 
 
-exec insertarContenedor '23-08-2017' , 'Productos Contemporaneos','FADEC';
+exec insertarContenedor '2017-08-23' , 'Productos Contemporaneos','FADEC';
 
 
 -----------------------FUNCTIONS------------------------------
+
+DROP FUNCTION CalculaMontoTotal
 
 go 
 create function CalculaMontoTotal
@@ -34,7 +38,6 @@ return @monto
 end
 go 
 
-DROP FUNCTION CalculaMontoTotal
 
 DECLARE @monto float; 
 EXEC @monto = CalculaMontoTotal 10, 2, 70000
@@ -42,6 +45,8 @@ SELECT @monto as 'Monto'
 
 
 -------------------TRIGGERS-----------------------
+
+drop trigger RestriccionPrecio
 
 go
 create trigger RestriccionPrecio on TelefonoP
