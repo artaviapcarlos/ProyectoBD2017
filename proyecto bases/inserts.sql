@@ -80,3 +80,7 @@ INSERT INTO Incluye VALUES ('2017-06-02 12:40:00', 'Ciudad Colón', 'Silla Mediev
 
 INSERT INTO Compra VALUES ('2017-07-11 15:15:15', 'Santa Ana', '203135498', '200164645');
 INSERT INTO Incluye VALUES ('2017-07-11 15:15:15', 'Santa Ana', 'Cuadro del barroco', '2017-01-01', 2, 5, 133000);
+
+
+INSERT INTO Compra VALUES ('2016-08-23 15:15:15', 'Santa Ana', '203135498', '200164645');
+INSERT INTO Incluye VALUES ('2016-08-23 15:15:15', 'Santa Ana', 'Lámpara clásica', '2016-08-23', 1, 0, 35000);
